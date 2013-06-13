@@ -1,23 +1,24 @@
 $(document).ready(function () {
 
- $('form').submit(function(event){
-   event.preventDefault();
-    var randNum = Math.floor(Math.random()*6) + 1;
-    var url = $(this).attr('action');
-   $.post(url, { "value" : randNum } , function(response){
-     $('#die').html("<img src='" + response.value + ".png'>" );
-     // $('#dieAjax').html("<img src='2.png'>" );
-   });
- });
+  $('form').on("submit", function(event) {
+    var password = $("input[name=password]").val();
+    var email = $("input[name=email]").val();
 
- //should also try this using a partial - See Rod and Nestor's code
-
-
-  // PSEUDO-CODE:
-  //   1- intercept the form submission event using jQuery
-  //   2- prevent the default action for that event from happening
-  //   3- generate a random number between 1 and 6 using JavaScript
-  //   4- use jQuery to submit an AJAX post to the form's action
-  //   5- when the AJAX post is done, replace the contents of the "#die" DIV in the DOM using jQuery
-
+  if (!email.match(/@/)){
+    event.preventDefault();
+    $("#errors").append("Email must be valid<br>");
+  }
+    if (password.length < 8){
+      event.preventDefault();
+      $("#errors").append("Password must be at least 8 characters long<br>");
+  }
+    if (!password.match(/[A-Z]/)){
+      event.preventDefault();
+      $("#errors").append("Password must contain at least 1 capital letter<br>");
+  }
+    if (!password.match(/\d/)){
+      event.preventDefault();
+      $("#errors").append("Password must contain at least 1 numerical character(0-9)");
+    }
+  });
 });
